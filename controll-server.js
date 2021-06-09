@@ -82,16 +82,18 @@ return new Promise((resolve, reject)=>{
 });
 }
 
-async function gcpStatus(){
+function gcpStatus(){
+return new Promise((resolve, reject)=>{
     exec(`gcloud compute instances describe ${MAIN_SERVER_NAME} --zone ${MAIN_SERVER_ZONE} --format=yaml\\(status\\)`, (err, stdout, stderr)=>{
         if(err){
             if(err.errno === 'EHOSTUNREACH' || err.code === 'EHOSTUNREACH') return 'down';
-            throw err;
+            reject(err);
         }
-        else if(stderr && stderr.replace(/\s/g, '').length) throw new Error(`stderr:${stderr}`);
-        else if(!stdout || !(stdout.replace(/\s/g, '').length)) throw new Error('Unknown Error');
-        else return stdout.replace(/^status:/, '').replace(/\s/g, '');
+        else if(stderr && stderr.replace(/\s/g, '').length) reject(new Error(`stderr:${stderr}`));
+        else if(!stdout || !(stdout.replace(/\s/g, '').length)) reject(new Error('Unknown Error'));
+        else resolve(stdout.replace(/^status:/, '').replace(/\s/g, ''));
     });
+});
 }
 
 async function serverStatus(){
