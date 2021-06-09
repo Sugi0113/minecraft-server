@@ -1,4 +1,4 @@
-var launch = false;
+var status = undefined;
 function error(s){
     alert('エラーだよ、すぎに伝えてね\n' + s);
 }
@@ -32,6 +32,7 @@ return new Promise(function(resolve, reject){
     var elm = document.getElementById('status');
     get('/api/status').then(function(body){
         var s, err;
+        status = 'ok';
         switch(body){
             case 'ok':
                 s = '動作中';
@@ -70,6 +71,7 @@ return new Promise(function(resolve, reject){
 });
 }
 function getOnlineUsers(){
+    if(status !== 'ok') return;
     var elm = document.getElementById('onlineusers');
     get('/api/onlineUsers').then(function(body){
         elm.innerText = '現在オンラインのユーザー: ' + body;
