@@ -137,13 +137,13 @@ async function getStatus(){
     //PROVISIONING, STAGING, RUNNING, STOPPING, TERMINATED
     if(s === 'RUNNING'){
         const body = await serverStatus();
-        status = body;
-    } else if(s === 'PROVISIONING' || s === 'STAGING') status = 'launch';
-    else if(s === 'STOPPING') status = 'shutdown';
-    else if(s === 'TERMINATED') status =  'off';
+        return body;
+    } else if(s === 'PROVISIONING' || s === 'STAGING') return 'launch';
+    else if(s === 'STOPPING') return 'shutdown';
+    else if(s === 'TERMINATED') return  'off';
     else {
-        status = 'err';
-        throw new Error(`s:${s}`);
+        console.error(new Error(`s:${s}`));
+        return 'err';
     }
 }
 status = await getStatus();
