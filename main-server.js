@@ -36,7 +36,7 @@ server.on('request', (req, res)=>{
             try{
                 bedrockProcess.kill('SIGQUIT');
                 resp(res, 200, 'done');
-                request.post({url:`http://${CONTROLL_SERVER_IP}/shutdown`, body:''});
+                request.post({url:`http://${CONTROLL_SERVER_IP}:8080/shutdown`, body:''});
             }catch(err){
                 resp(res, 500, err.stack);
             }
@@ -46,7 +46,7 @@ server.on('request', (req, res)=>{
             try{
                 bedrockProcess.kill('SIGQUIT');
                 resp(res, 200, 'done');
-                request.post({url:`http://${CONTROLL_SERVER_IP}/reset`, body:''});
+                request.post({url:`http://${CONTROLL_SERVER_IP}:8080/reset`, body:''});
             }catch(err){
                 resp(res, 500, err.stack);
             }
@@ -64,11 +64,11 @@ function startBedrock(){
             if(row === '[INFO] Server started.') {
                 launch = false;
                 reset = false;
-                request.post({url:`http://${CONTROLL_SERVER_IP}/ok`, body:''});
+                request.post({url:`http://${CONTROLL_SERVER_IP}:8080/ok`, body:''});
             } else if(row.match(/^\[INFO\] Player connected:/)){
                 clearTimeout(idleTimeout);
                 idleSince = 0;
-                request.post({url:`http://${CONTROLL_SERVER_IP}/idle`, body:'0'});
+                request.post({url:`http://${CONTROLL_SERVER_IP}:8080/idle`, body:'0'});
                 clearTimeout(idleTimeout);
                 onlineUsers.push(row.replace(/^\[INFO\] Player connected: /, '').match(/[^\,]+/)[0]);
             }
@@ -76,11 +76,11 @@ function startBedrock(){
                 onlineUsers.splice(row.replace(/^\[INFO\] Player disconnected: /, '').match(/[^\,]+/)[0], 1);
                 if(!onlineUsers.length){
                     idleSince = Date.now();
-                    request.post({url:`http://${CONTROLL_SERVER_IP}/idle`, body:idleSince+''});
+                    request.post({url:`http://${CONTROLL_SERVER_IP}:8080/idle`, body:idleSince+''});
                     idleTimeout = setTimeout(()=>{
                         quit = true;
                         bedrockProcess.kill('SIGQUIT');
-                        request.post({url:`http://${CONTROLL_SERVER_IP}/shutdown`, body:''});
+                        request.post({url:`http://${CONTROLL_SERVER_IP}:8080/shutdown`, body:''});
                     }, IDLE_TIMEOUT);
                 }
             }
