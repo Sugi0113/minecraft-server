@@ -59,7 +59,7 @@ server.on('request', (req, res)=>{
 server.listen(80);
 function startBedrock(){
     onlineUsers = [];
-    bedrockProcess = exec(`./start-bedrock.sh | tee log/bedrock/${timeSting()}`);
+    bedrockProcess = exec(`/home/sugi/git/minecraft-server/start-bedrock.sh | tee /home/sugi/git/minecraft-server/log/bedrock/${timeSting()}`);
     bedrockProcess.stdout.on('data', stdout => {
         const rowArr = stdout.split(/\n/g);
         for(const row of rowArr){
