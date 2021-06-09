@@ -171,23 +171,27 @@ app.post('/api/launch', (req, res)=>{
 });
 
 app.get('/api/onlineUsers', async (req, res)=>{
+    if(status != 'ok') return response(res, 200, '');
     const [err, res2] = await httpGET(`http://${MAIN_SERVER_IP}/onlineUsers`), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
 
 app.post('/api/off', async (req, res) => {
+    if(status != 'ok') return response(res, 400, '');
     const [err, res2] = await httpPOST(`http://${MAIN_SERVER_IP}/off`, ''), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
 
 app.post('/api/softreset', async (req, res) => {
+    if(status != 'ok') return response(res, 400, '');
     const [err, res2] = await httpPOST(`http://${MAIN_SERVER_IP}/softreset`, ''), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
 app.post('/api/hardreset', async (req, res) => {
+    if(status != 'ok') return response(res, 400, '');
     const [err, res2] = await httpPOST(`http://${MAIN_SERVER_IP}/hardreset`, ''), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
