@@ -109,6 +109,7 @@ async function serverStatus(){
 app.use(express.static('./public'));
 let status = 'off';
 watchServer.on('request', (req, res)=>{
+    console.log('watch', req.url);
     if(req.url === '/ok') status = 'ok';
     else if(req.url === '/shutdown'){
         status = 'shutdown';
@@ -161,6 +162,7 @@ app.post('/api/launch', (req, res)=>{
         }
     }).stderr.on('data', () => {
         if(!end){
+            console.log('launch stderr');
             end = true;
             status = 'launch';
             response(res, 200, 'done');
