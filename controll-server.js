@@ -188,4 +188,7 @@ app.post('/api/hardreset', async (req, res) => {
     else response(res, statusCode, body);
 });
 server.listen(443);
+http.createServer((req, res)=>response(res, 307, '', {
+    'Location':`htts://sugicraft.cf${req.url}`
+})).listen(80);
 })();
