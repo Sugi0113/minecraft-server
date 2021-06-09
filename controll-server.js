@@ -153,21 +153,13 @@ app.use('/api/status', async (req, res)=>{
 });
 
 app.post('/api/launch', (req, res)=>{
-    let end = false;
     exec(`gcloud compute instances start ${MAIN_SERVER_NAME} --zone ${MAIN_SERVER_ZONE}`, (err, stdout, stderr) => {
         if(err){
-            if(!end) response(res, 500, err.stack||err.toString());
-            end = true;
-            console.error(err);
-        }
-    }).stderr.on('data', () => {
-        if(!end){
-            console.log('launch stderr');
-            end = true;
-            status = 'launch';
-            response(res, 200, 'done');
+            throw err;
         }
     });
+    status = 'launch';
+    response(res, 200, 'done');
 });
 
 app.get('/api/onlineUsers', async (req, res)=>{
