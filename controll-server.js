@@ -1,4 +1,4 @@
-(async ()=>{
+//(async ()=>{
 'use strict';
 
 const { exec } = require('child_process'),
@@ -162,27 +162,27 @@ app.post('/api/launch', (req, res)=>{
     });
 });
 
-app.get('/api/onlineUsers', (req, res)=>{
+app.get('/api/onlineUsers', async (req, res)=>{
     const [err, res2] = await httpGET(`http://${MAIN_SERVER_IP}/onlineUsers`), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
 
-app.post('/api/off', (req, res) => {
+app.post('/api/off', async (req, res) => {
     const [err, res2] = await httpPOST(`http://${MAIN_SERVER_IP}/off`, ''), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
 
-app.post('/api/softreset', (req, res) => {
+app.post('/api/softreset', async (req, res) => {
     const [err, res2] = await httpPOST(`http://${MAIN_SERVER_IP}/softreset`, ''), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
-app.post('/api/hardreset', (req, res) => {
+app.post('/api/hardreset', async (req, res) => {
     const [err, res2] = await httpPOST(`http://${MAIN_SERVER_IP}/hardreset`, ''), {statusCode, body} = res2;
     if(err) response(res, 500, err);
     else response(res, statusCode, body);
 });
 server.listen(443);
-})();
+//})();
