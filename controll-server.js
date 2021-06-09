@@ -3,6 +3,7 @@
 
 const { exec } = require('child_process'),
     express = require('express'),
+    http = require('http'),
     https = require('https'),
     fs = require('fs'),
     request = require('request'),
