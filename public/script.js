@@ -1,6 +1,11 @@
-var status = undefined;
+var status = undefined, stIntv, stIntvN;
 function error(s){
     alert('エラーだよ、すぎに伝えてね\n' + s);
+}
+function setStatusIntv(n){
+    stIntvN = n;
+    clearInterval(stIntv);
+    stIntv = setInterval(getStatus, n*1000);
 }
 function get(url){
     return new Promise(function(resolve, reject){
@@ -35,6 +40,7 @@ return new Promise(function(resolve, reject){
         status = 'ok';
         switch(body){
             case 'ok':
+                if(stIntvN !== 5) setStatusIntv(5);
                 s = '動作中';
                 get('/api/idleSince').then(function(idleSince){
                     idleSince = parseInt(idleSince);
@@ -49,6 +55,7 @@ return new Promise(function(resolve, reject){
                 s = 'シャットダウン中';
             break;
             case 'off':
+                if(stIntvN !== 5) setStatusIntv(5);
                 s = '停止中';
                 setBtnClickable(true, true);
             break;
@@ -80,15 +87,11 @@ function getOnlineUsers(){
 document.addEventListener('DOMContentLoaded', function(){
     getStatus();
     getOnlineUsers();
-    var stIntv;
-    var userIntv = setInterval(getOnlineUsers, 5000);
-    function setStatusIntv(n){
-        clearInterval(stIntv);
-        stIntv = setInterval(getStatus, n*1000);
-    }
+    setInterval(getOnlineUsers, 5000);
     setStatusIntv(5);
-    document.getElementById('startstop').addEventListener(function(){
+    document.getElementById('startstop').addEventListener('click',function(){
         if(!confirm(this.innerText + 'しますか？')) return;
+        setStatusIntv(2);
         if(this.innerText === '起動'){
             post('/api/launch').then(function(body){
                 if(body === 'done') setBtnClickable(false);
@@ -100,15 +103,17 @@ document.addEventListener('DOMContentLoaded', function(){
             });
         }
     });
-    document.getElementById('softreset').addEventListener(function(){
+    document.getElementById('softreset').addEventListener('click',function(){
         if(!confirm('再起動しますか？')) return;
+        setStatusIntv(2);
         post('/api/softreset').then(function(body){
             if(body === 'done') setBtnClickable(false);
             else error('softreset, body='+body);
         });
     });
-    document.getElementById('hardreset').addEventListener(function(){
+    document.getElementById('hardreset').addEventListener('click',function(){
         if(!confirm('再起動しますか？')) return;
+        setStatusIntv(2);
         post('/api/hardreset').then(function(body){
             if(body === 'done') setBtnClickable(false);
             else error('hardreset, body='+body);
