@@ -1,6 +1,5 @@
+(async ()=>{
 'use strict';
-
-const { isFunction } = require('util');
 
 const { exec } = require('child_process'),
     express = require('express'),
@@ -186,3 +185,4 @@ app.post('/api/hardreset', (req, res) => {
     else response(res, statusCode, body);
 });
 server.listen(443);
+})();

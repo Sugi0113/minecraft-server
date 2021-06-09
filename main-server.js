@@ -1,3 +1,5 @@
+(async ()=>{
+'use strict';
 const { exec } = require('child_process'),
     http = require('http'),
     fs = require('fs'),
@@ -101,3 +103,4 @@ function startBedrock(){
     });
 }
 startBedrock();
+})();
