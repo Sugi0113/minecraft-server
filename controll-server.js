@@ -97,10 +97,13 @@ return new Promise((resolve, reject)=>{
 }
 
 async function serverStatus(){
-    const [err, res] = await httpGET(`http://${MAIN_SERVER_IP}/status`), {statusCode, body} = res;
+    const [err, res] = await httpGET(`http://${MAIN_SERVER_IP}/status`);
     if(err) throw err;
-    if(statusCode === 200) return body;
-    else throw new Error(`code:${statusCode}\nbody:${body}`);
+    if(res){
+        const {statusCode, body} = res;
+        if(statusCode === 200) return body;
+        else throw new Error(`code:${statusCode}\nbody:${body}`);
+    }
 }
 
 app.use(express.static('./public'));
