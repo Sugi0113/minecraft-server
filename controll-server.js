@@ -1,4 +1,4 @@
-//(async ()=>{
+(async ()=>{
 'use strict';
 
 const { exec } = require('child_process'),
@@ -185,4 +185,4 @@ app.post('/api/hardreset', async (req, res) => {
     else response(res, statusCode, body);
 });
 server.listen(443);
-//})();
+})();
