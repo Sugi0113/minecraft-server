@@ -17,7 +17,11 @@
   },
   "homepage": "https://github.com/Sugi0113/minecraft-server#readme",
   "dependencies": {
+    "child_process": "^1.0.2",
     "express": "^4.17.1",
+    "fs": "^0.0.1-security",
+    "http": "^0.0.1-security",
+    "https": "^1.0.0",
     "request": "^2.88.2"
   }
 }
